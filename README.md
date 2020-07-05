@@ -103,7 +103,7 @@ usually i use kops to setup the cluster but there are different many other alter
 
 2. **How would you scale the application setup across multiple regions?**
   **Ans:** 
-     - We can build a cluster on different cloud provider and using different tools , for AWS then EKS would be perfect choice for the above case since it's managed kubernetes service provided by AWS and we can build the cluster on nodes on different availablity zones even using `spot instances` , with spot instances we can build kubernetes on nodes with very high discounts and actually we can run a script to get the termination notice from the metadata and if there is a termination flag we can cordon the node then the schedular will no longer and schedule any pods for this node and migrate the existing ones to new node which could start by the autoscalar group in case there is no enough capacity in the nodes of the existing cluster.
+     - We can build a cluster on different cloud provider and using different tools , for AWS then EKS would be perfect choice for the above case since it's managed kubernetes service provided by AWS and we can build the cluster on nodes on different availablity zones even using `spot instances` , with spot instances we can build kubernetes on nodes with very high discounts and actually we can run a script to get the termination notice from the metadata and if there is a termination flag the script can cordon the node then the schedular will no longer and schedule any pods for this node and migrate the existing ones to new node which could start by the autoscalar group in case there is no enough capacity in the nodes of the existing cluster.
        sample command 
        ```bash
        # this creates a cluster with single nodegroup in specific region 
@@ -126,4 +126,4 @@ usually i use kops to setup the cluster but there are different many other alter
 
 
 ## Note
-within every folder a README.md file which explains steps-by-step the requirements and
+within every folder a README.md file which explains steps-by-step the requirements
