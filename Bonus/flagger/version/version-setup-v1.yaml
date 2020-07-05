@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: version-v1
+  namespace: flagger
+  labels:
+    app: version
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: version
+      # version: v1
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: version
+        version: v1
+    spec:
+      containers:
+      - name: version
+        image:  moazrefat/app:version-v1
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 8080
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "150Mi"
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: version-config
+          - secretRef:
+              name: version-secret
+

@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - Challenge</title>
+    {% endblock %}
+  </head>
+  <body style="background-color:powderblue;">
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+      {% block footer %}
+      &copy; Copyright 2020 by <a href="https://www.linkedin.com/in/moazrefat/">MoaazNoaman</a>.
+      {% endblock %}
+    </div>
+  </body>
+</html>

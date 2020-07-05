@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: flagger
+  labels:
+    role: db
+    tier: back
+#    app: mysql-db
+  name: version-db-svc
+spec:
+  ports:
+  type: ClusterIP
+  ports:
+  - port: 3306
+    targetPort: 3306
+    protocol: TCP
+  selector:
+    app: mysql-version-db

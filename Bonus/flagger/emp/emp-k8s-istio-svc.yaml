@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: employees
+  namespace: flagger
+  labels:
+    app: employees
+    service: employees
+spec:
+  ports:
+  - port: 8080
+    # name: http
+  selector:
+    app: employees
+    # version: v1

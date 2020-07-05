@@ -1,0 +1,62 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: version-svc
+  namespace: flagger
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: version-svc
+  namespace: flagger
+  selfLink: >-
+    /apis/networking.istio.io/v1alpha3/namespaces/production/virtualservices/version-svc
+  generation: 1
+  labels:
+    kiali_wizard: weighted_routing
+spec:
+  spec:
+  hosts:
+    - version-svc
+  http:
+    - route:
+        - destination:
+            host: version-svc
+            subset: v1
+          weight: 80
+        - destination:
+            host: version-svc
+            subset: v2
+          weight: 10
+        - destination:
+            host: version-svc
+            subset: v3
+          weight: 10
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: version-svc
+  namespace: flagger
+spec:
+  host: version-svc
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+  - name: v3
+    labels:
+      version: v3

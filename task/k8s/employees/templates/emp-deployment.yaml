@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.employees.name }}
+  namespace: {{ .Values.environment }}
+  labels:
+    app: {{ .Values.employees.name }}
+    version: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ .Values.employees.name }}
+      version: v1
+  minReadySeconds: 10
+  strategy:
+    type: {{ .Values.employees.strategy.type }}
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.employees.name }}
+        version: v1
+    spec:
+      containers:
+      - name: {{ .Values.employees.name }}
+        image:  moazrefat/app:employee
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /api/info
+            port: {{ .Values.employees.port }}
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: {{ .Values.employees.port }}
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "150Mi"
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+        ports:
+        - containerPort: {{ .Values.employees.port }}
+        envFrom:
+          - configMapRef:
+              name: emp-config
+          - secretRef:
+              name: emp-secret

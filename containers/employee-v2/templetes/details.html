@@ -1,0 +1,41 @@
+{% extends "default.html" %}
+{% block content %}
+   <style>
+
+    th:tr{
+        color: blue;
+
+    }
+    tr:nth-of-type(2n){
+        border: 1px solid black;
+        background-color: rgba(150, 150, 150, 0.5);
+
+    }
+
+    td{
+        padding: 8px 8px;
+        border: 1px solid black;
+    }
+   </style>
+<p><b>Employee Details </b></p>
+<table border="1">
+<table>
+     <thead>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Department</th>
+        <th>Email</th>
+        <th>Comment</th>
+     </thead>
+    <tbody>
+    {% for dict in data %}
+    <tr>
+        {% for key,value in dict.items() %}
+            <th> {{ value }} </th>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p><small>{{ version }}</small></p>
+{% endblock %}

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-version-db
+  namespace: {{ .Values.environment }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: back
+      app: mysql-version-db
+  minReadySeconds: 10
+#  strategy:
+#    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql-version-db
+        role: db
+        tier: back
+    spec:
+      containers:
+      - image: moazrefat/app:version-db
+        name: mysql-version-db
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3306
+          protocol: TCP
+        envFrom:
+          - configMapRef:
+              name: version-db-config

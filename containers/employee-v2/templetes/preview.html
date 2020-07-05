@@ -1,0 +1,42 @@
+{% extends "default.html" %}
+{% block content %}
+   <style>
+
+    th:tr{
+        color: blue;
+
+    }
+    tr:nth-of-type(2n){
+        border: 1px solid black;
+        background-color: rgba(150, 150, 150, 0.5);
+
+    }
+
+    td{
+        padding: 8px 8px;
+        border: 1px solid black;
+    }
+   </style>
+<p><b>Employee Details </b></p>
+<table border="1">
+      <p><b>Users Details </b></p>
+      <table>
+          <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Department</th>
+            <th>Email</th>
+            <th>Comment</th>
+
+          </tr>
+          <tr>
+            <td>{{ firstname }}</td>
+            <td>{{ lastname }}</td>
+            <td>{{ department }}</td>
+            <td>{{ email }}</td>
+            <td>{{ comment }}</td>
+          </tr>
+        </table>
+        <p><small>{{ version }}</small></p>
+<p><small>{{ version }}</small></p>
+{% endblock %}

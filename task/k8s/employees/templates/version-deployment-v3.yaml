@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: version-v3
+  namespace: {{ .Values.environment }}
+  labels:
+    app: {{ .Values.version.name }}
+    version: v3
+spec:
+  replicas: {{ .Values.version.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.version.name }}
+      # version: v3
+  minReadySeconds: 10
+  strategy:
+    type: {{ .Values.version.strategy.type }}
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.version.name }}
+        version: v3
+    spec:
+      containers:
+      - name: {{ .Values.version.name }}
+        image:  moazrefat/app:version-v3
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "150Mi"
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: version-config
+          - secretRef:
+              name: version-secret

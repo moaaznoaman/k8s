@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: flagger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: back
+      app: mysql-db
+  minReadySeconds: 10
+#  strategy:
+#    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql-db
+        role: db
+        tier: back
+    spec:
+      containers:
+      - image: moazrefat/app:main-db
+        name: mysql-db
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3306
+          protocol: TCP
+        envFrom:
+          - configMapRef:
+              name: mysql-config
+          - secretRef:
+              name: mysql-secret

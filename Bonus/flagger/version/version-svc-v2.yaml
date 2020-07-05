@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: version-svc-v2
+  namespace: flagger
+  labels:
+    app: version
+    service: version
+spec:
+  ports:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    # name: http
+  selector:
+    app: version
+    version: v2

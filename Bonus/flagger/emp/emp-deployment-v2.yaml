@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employees
+  namespace: flagger
+  labels:
+    app: employees
+    # version: v2
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: employees
+      # version: v2
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: employees
+        # version: v2
+    spec:
+      containers:
+      - name: employees
+        image:  moazrefat/app:employee-v2
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: "100m"
+            memory: "150Mi"
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+        ports:
+        - containerPort: 8080
+        envFrom:
+          - configMapRef:
+              name: emp-config
+          - secretRef:
+              name: emp-secret

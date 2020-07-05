@@ -1,0 +1,25 @@
+{% extends "default.html" %}
+{% block content %}
+    <form action="" method="post">
+        <p>
+            {{form.firstname.label}} <br>
+            {{form.firstname(size=30)}}
+        </p>
+        <p>
+            {{form.lastname.label}} <br>
+            {{form.lastname(size=30)}}
+        </p>
+        <p>
+            {{form.department.label}} <br>
+            {{form.department(size=30)}}
+        </p>
+        <p>
+            {{form.email.label}} <br>
+            {{form.email(size=30)}}
+        </p>
+        <p>
+            {{form.submit()}}
+        </p>
+    </form>
+<p><small>{{ version }}</small></p>
+{% endblock %}

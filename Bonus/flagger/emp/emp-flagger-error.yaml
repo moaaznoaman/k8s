@@ -1,0 +1,61 @@
+---
+apiVersion: flagger.app/v1beta1
+kind: Canary
+metadata:
+  name: employees
+  namespace: flagger
+spec:
+  provider: istio
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: employees
+  progressDeadlineSeconds: 60
+  autoscalerRef:
+    apiVersion: autoscaling/v2beta1
+    kind: HorizontalPodAutoscaler
+    name: employees-hpa
+  service:
+    port: 80
+    targetPort: 8080
+    hosts:
+    - "*"
+    gateways:
+    - employees
+    http:
+    - match:
+      - uri:
+          exact: /api/version
+      - uri:
+          prefix: /api/details
+      - uri:
+          prefix: /api/register
+      - uri:
+          prefix: /api/health
+      - uri:
+          prefix: /api/hostname
+      route:
+        - destination:
+            host: employees
+    trafficPolicy:
+      tls:
+        mode: DISABLE
+    retries:
+      attempts: 3
+      perTryTimeout: 1s
+      retryOn: "gateway-error,connect-failure,refused-stream"
+  analysis:
+    interval: 1m
+    threshold: 1
+    maxWeight: 60
+    stepWeight: 20
+    metrics:
+    - name: request-success-rate
+      threshold: 99
+      interval: 1m
+    alerts:
+      - name: "Deployment Status"
+        severity: info
+        providerRef:
+          name: deployment-status
+          namespace: flagger

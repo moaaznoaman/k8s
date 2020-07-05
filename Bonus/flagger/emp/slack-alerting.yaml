@@ -1,0 +1,10 @@
+apiVersion: flagger.app/v1beta1
+kind: AlertProvider
+metadata:
+  name: deployment-status
+  namespace: flagger
+spec:
+  type: slack
+  channel: kubernes-labs
+  username: flagger
+  address: https://hooks.slack.com/services/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
