@@ -1,0 +1,5 @@
+LICENSE
+instance.tf.bckup
+mykey*
+terraform.tfstate
+terraform.tfvars*
