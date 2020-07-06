@@ -19,12 +19,12 @@
     name: emp-secret
 ```
 3. **If the application is stateful - then it should have a persistent volume configuration**  
-   **Ans:** my main application is a stateless application written in python/flask which requires DB connection , in this setup i setup the DB as deployment of one replicas which makes it works but for production environments i would have one of the two options: 
+   **Ans:** My main application is a stateless application written in python/flask which requires DB connection , in this setup i setup the DB as deployment of one replicas which makes it works but for production environments i would have one of the two options: 
    - if we are on cloud i would prefer to use a cloud managed DB rather than keep the data base within the kubernetes cluster
    - if i've to set it up within the cluster i would choose statefulset as setup for the DB in order to have DB cluster one primary and one secondary one is having read/write and second is having only read access and both are sharing the persistent volume
 
 4. **You should make use of the readiness and liveness probe as much as feasible.**  
-**Ans:** i build a health page for my main microservice on `/api/health` and defined liveness/readiness within the deployment please check file `task/k8s/employees/templates/emp-deployment.yaml`
+**Ans:** I build a health page for my main microservice on `/api/health` and defined liveness/readiness within the deployment please check file `task/k8s/employees/templates/emp-deployment.yaml`
 ```
 livenessProbe:
     httpGet:
@@ -36,11 +36,11 @@ readinessProbe:
        port: 8080
 ```
 5. **if possible, Ingress should be deployed for the opportunity to access the application outside of the private network**  
-**Ans:** i used helm repo to install ingress-nginx charts ![install-ingress-nginx](https://github.com/moaaznoaman/k8s/tree/master/task#install-ingress-nginx)
+**Ans:** I used helm repo to install ingress-nginx charts ![install-ingress-nginx](https://github.com/moaaznoaman/k8s/tree/master/task#install-ingress-nginx)
 
 ## follow-up questions: 
 1. **Where and how did you set up the Kubernetes cluster? Why did you consider this option? How would you handle the cluster setup next time you'll need a new one?**
-**Ans:** i did setup kubernetes on AWS as well sometimes i do set it up on GKE. 
+**Ans:** I did setup kubernetes on AWS as well sometimes i do set it up on GKE. 
 usually i use kops to setup the cluster but there are different many other alternatives which i used before like
     - kops for AWS
     ```bash 
@@ -92,7 +92,7 @@ usually i use kops to setup the cluster but there are different many other alter
 1. **How would you improve the application setup?**
     a. **Would you go with CI/CD pipeline? If so, which one?**  
     **Ans:**  
-    using integration tools like gitlab/jenkins i am familiar with pipeline for both as we use already gitlab pipelines for building DC infrastructure using terraform as well we use jenkins pipeline applications deployment pipelines and i alreayd write a sample pipeline in Jenkinsfile (task/Jenkinsfile) 
+    Using integration tools like gitlab/jenkins i am familiar with pipeline for both as we use already gitlab pipelines for building DC infrastructure using terraform as well we use jenkins pipeline applications deployment pipelines and i alreayd write a sample pipeline in Jenkinsfile (task/Jenkinsfile) 
 
     b. **Would you template the setup? If so, which tool would you choose for that?**  
     **Ans:**  
@@ -100,7 +100,7 @@ usually i use kops to setup the cluster but there are different many other alter
 
     c. **How would you monitor the application? What kind of metrics would you choose**  
     **Ans:**  
-     there are different way to monitor kubernetes cluster and the applications i already explained in step-by-step approach how to integrate kubernetes cluster with prometheus and grafana and exposing the application metrics using kube-state-metrics via `/metrics` path , however we can monitor the application and forward the cluster logs to ELK stack as well.  
+    There are different way to monitor kubernetes cluster and the applications i already explained in step-by-step approach how to integrate kubernetes cluster with prometheus and grafana and exposing the application metrics using kube-state-metrics via `/metrics` path , however we can monitor the application and forward the cluster logs to ELK stack as well.  
 
 2. **How would you scale the application setup across multiple regions?**
   **Ans:** 
@@ -127,4 +127,4 @@ usually i use kops to setup the cluster but there are different many other alter
 
 
 ## Note
-within every folder a README.md file which explains steps-by-step the requirements
+Within every folder a README.md file which explains steps-by-step the requirements

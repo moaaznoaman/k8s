@@ -2,12 +2,12 @@
 1. Kuberentes cluster 
 2. Istio as service mesh 
 
-### installing flagger 
+### Installing flagger 
 ```bash
 kubectl apply -k github.com/weaveworks/flagger/kustomize/istio
 ```
 
-### set the prerequisites
+### Set the prerequisites
 ```bash
 find . -iname k8s-ns.yaml| xargs kubectl apply -f
 kubectl label namespace flagger istio-injection=enabled
@@ -23,7 +23,7 @@ find . -iname db-deploy.yaml | xargs kubectl apply -f
 find . -iname db-svc.yaml | xargs kubectl apply -f
 ```
 
-### version DB
+### Version DB
 ```bash
 find . -iname version-db-configmap.yaml | xargs kubectl apply -f
 find . -iname version-db-deploy.yaml | xargs kubectl apply -f
@@ -50,7 +50,7 @@ find . -iname emp-deployment-v1.yaml | xargs kubectl apply -f
 find . -iname emp-hpa.yaml | xargs kubectl apply -f
 ```
 
-### apply new release v2 to test automated-canary with flagger
+### Apply new release v2 to test automated-canary with flagger
 ```bash
 find . -iname emp-flagger-alerting.yaml | xargs kubectl apply -f
 find . -iname slack-alerting.yaml | xargs kubectl apply -f
@@ -63,8 +63,16 @@ flagger switched 100% of the traffic to the new version fo the application v2 af
 flagger send a notification message to slack channel that deployment is completed successfully
 ![slack notification after the releese is completed](files/slack-notification.png) 
 
+### Exporting istio external/public IP address
+```bash
+export IP=$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+# send traffic to application apis 
+siege -c 10 -t 10m http://$IP/api/details/moaaz
+# or
+while true; do curl -s -o /dev/null http://35.233.11.47/api/details/info && sleep 1 ; done 
+```
 
-### access application via below APIs
+### Access application via below APIs
 ```
 >> http://IP/welcome 
 >> http://IP/api/register
@@ -86,14 +94,6 @@ http://IP/api/register
 ![register page](files/register-page.png)
 
 
-### Exporting istio external/public IP address
-```bash
-export IP=$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-# send traffic to application apis 
-siege -c 10 -t 10m http://$IP/api/details/moaaz
-# or
-while true; do curl -s -o /dev/null http://35.233.11.47/api/details/info && sleep 1 ; done 
-```
 
 ### additionally you can setup granfa-flagger helm chart to k8s cluster
 ```bash

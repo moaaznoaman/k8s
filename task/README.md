@@ -11,7 +11,7 @@ helm install nginx stable/nginx-ingress --namespace nginx --set rbac.create=true
 4. install grafana to visualize the metrics and build monitors  
 5. install my application charts using helm 
    
-### 1. create a cluster role binding with the account name in k8s cluster
+### 1. Create a cluster role binding with the account name in k8s cluster
 ```bash
 ACCOUNT=$(gcloud info --format='value(config.account)')
 kubectl create clusterrolebinding owner-cluster-admin-binding \
@@ -19,7 +19,7 @@ kubectl create clusterrolebinding owner-cluster-admin-binding \
     --user $ACCOUNT
 ```
 
-### 2. install prometheus  
+### 2. Install prometheus  
 ```bash
 # create a name space to install monitoring related pods,service, etc.
 kubectl create namespace monitoring
@@ -32,7 +32,7 @@ kubectl apply -f task/k8s/prometheus/PrometheusDeployment.yaml
 # list all created resources in monitoring name space
 kubectl get deployments --namespace=monitoring
 ```
-### connect to prometheus
+### Connect to prometheus
 ```bash
 # port forwarding 
 kubectl -n monitoring port-forward $(kubectl -n monitoring get pod -l app=prometheus-server -o jsonpath='{.items[0].metadata.name}') 8080:9090 &
@@ -42,7 +42,7 @@ curl http://localhost:8080
 kubectl apply -f prometheus/PrometheusService.yaml
 ```
 
-### 3. install Kube State Metrics
+### 3. Install Kube State Metrics
 ```bash
 # create a cluster role 
 kubectl apply -f task/k8s/kube-state-metrics/cluster-role.yaml
@@ -58,14 +58,14 @@ kubectl apply -f task/k8s/kube-state-metrics/service.yaml
  kubectl get deployments kube-state-metrics -n kube-system
 ```
 
-### 4. install garafana
+### 4. Install garafana
 ```bash
 # create a datasource configration for grafana server
 kubectl apply -f task/k8s/kube-state-metrics/grafana/grafana-datasource-config.yaml
 # create grafana deplpyment 
 kubectl apply -f task/k8s/kube-state-metrics/grafana/grafana-deployment.yam
 ```
-### connect to Grafana 
+### Connect to Grafana 
 ```bash
 # port forwarding 
 kubectl -n monitoring port-forward $(kubectl -n monitoring get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &
@@ -80,11 +80,11 @@ kubectl apply -f task/k8s/grafana/grafana-service.yaml
 ![deployments monitoring](k8s/files/deployment-monitoring.png) 
 ![deployments monitoring](k8s/files/pods-status.png)
 
-### 4. install my application using helm chartchart 
-#### this application consist or two main microservices main one ( employees ) other one is (version) both applications requires connect to DB backends which is MYSQL db containers
+### 4. Install my application using helm chartchart 
+#### this application consist of two main microservices main one ( employees ) other one is (version) both applications requires connect to DB backends which is MYSQL db containers
 #### for final overview please have a look on below section "[applications architecture](https://github.com/moaaznoaman/k8s/tree/master/task#applications-architecture)"
 
-#### install kubernetes helm charts 
+#### Install kubernetes helm charts 
 ```bash
 # here i assume different environments are build on same cluster but different name spaces 
 # for development environment 
@@ -92,10 +92,10 @@ helm install --generate-name  ./k8s/employees --set environment=development  -f 
 # for production environment
 helm install --generate-name  ./k8s/employees --set environment=production  -f employees/envs/prod/values.yaml
 ```
-### applications architecture
+### Applications architecture
 ![architecture](k8s/files/app-architecture.png)
 
-### get external accesisble IP address
+### Get external accesisble IP address
 ```bash 
 export IP=$(kubectl get svc nginx-nginx-ingress-controller -n nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
@@ -118,7 +118,7 @@ http://IP/api/info
 http://IP/api/register
 ![register page](k8s/files/register-page.png)
 
-### send traffic to application APIs 
+### Send traffic to application APIs 
 ```bash
 siege -c 10 -t 10m http://$(kubectl get svc nginx-nginx-ingress-controller -n nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}')/api/details/moaaz
 ```
