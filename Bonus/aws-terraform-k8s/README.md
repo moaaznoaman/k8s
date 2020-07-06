@@ -21,9 +21,9 @@ terraform apply -auto-approve
 
 ## Final status
 EC2 nodes on AWS console
-![EC2 nodes on AWS console](files/aws-k8s-cluster.png) 
+![EC2 nodes on AWS console](aws-k8s-cluster.png) 
 Kubernetes cluster nodes
-![Kubernetes cluster nodes](files/k8s-cluster-nodes-details.png )
+![Kubernetes cluster nodes](k8s-cluster-nodes-details.png )
 
 ## Destorying the cluster
 ```bash

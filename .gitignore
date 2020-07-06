@@ -1,2 +1,10 @@
 DevOps_Technical_Assessment.pdf
 .DS_Store
+bonus/aws-terraform-k8s/LICENSE
+bonus/aws-terraform-k8s/instance.tf.bckup
+bonus/aws-terraform-k8s/mykey*
+bonus/aws-terraform-k8s/terraform.tfstate
+bonus/aws-terraform-k8s/terraform.tfvars*
+bonus/aws-terraform-k8s/files/*
+Bonus/aws-terraform-k8s/credentials.csv
+**/.terraform/*
