@@ -6,12 +6,6 @@ DB_LB = os.environ['MYSQL_LB']
 DB_NAME = os.environ['MYSQL_DATABASE']
 DB_USER = os.environ['MYSQL_USER']
 DB_PASSWORD = os.environ['MYSQL_PASSWORD']
-# DB_LB='localhost'
-# MYSQL_ROOT_PASSWORD='dontplaywithme'
-# DB_NAME='app'
-# DB_USER='root'
-# DB_PASSWORD='dontplaywithme'
-
 
 class db():
     def __init__(self):
